@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laís Lima | Pesquisa de Interesse — Workshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --maroon-dark:#4c1530;
+    --maroon:#6e2247;
+    --rose:#b25a78;
+    --rose-light:#d999ac;
+    --cream:#f7f0e8;
+    --cream-2:#f1e6da;
+    --ink:#3d2430;
+    --ink-soft:#6b5560;
+    --gold:#c6a15b;
+    --white:#ffffff;
+    --shadow: 0 20px 50px -20px rgba(76,21,48,0.35);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Raleway',sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{font-family:'Cormorant Garamond',serif;}
+
+  /* ---------- HEADER ---------- */
+  .topbar{
+    background:linear-gradient(120deg,var(--maroon-dark),var(--maroon));
+    color:var(--cream);
+    padding:18px 32px;
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.15rem;
+    letter-spacing:0.02em;
+  }
+
+  /* ---------- HERO (Step 0) ---------- */
+  .hero{
+    position:relative;
+    min-height:calc(100vh - 62px);
+    background:radial-gradient(120% 140% at 15% 15%, var(--maroon-dark) 0%, var(--maroon) 45%, var(--rose) 100%);
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding:60px 8vw;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    left:-120px; bottom:-140px;
+    width:420px; height:420px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.06);
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:10%; top:-160px;
+    width:300px; height:300px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+  }
+  .hero-inner{
+    position:relative;
+    z-index:2;
+    max-width:640px;
+    text-align:right;
+    color:var(--white);
+    animation:fadeUp .9s ease both;
+  }
+  @keyframes fadeUp{from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);}}
+  .badge{
+    display:inline-block;
+    padding:7px 18px;
+    border:1px solid rgba(255,255,255,0.5);
+    border-radius:999px;
+    font-size:0.72rem;
+    letter-spacing:0.16em;
+    font-weight:600;
+    color:rgba(255,255,255,0.9);
+    margin-bottom:22px;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem,4.2vw,3.2rem);
+    font-weight:500;
+    line-height:1.15;
+    margin:0 0 4px;
+  }
+  .hero h1 em{
+    display:block;
+    font-style:italic;
+    font-weight:400;
+    color:var(--rose-light);
+    font-size:1.05em;
+  }
+  .hero p{
+    font-size:1.02rem;
+    line-height:1.7;
+    color:rgba(255,255,255,0.85);
+    margin:24px 0 30px;
+  }
+  .hero-facts{
+    display:flex;
+    gap:18px;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+    font-size:0.85rem;
+    color:rgba(255,255,255,0.8);
+    margin-bottom:34px;
+  }
+  .hero-facts span::before{content:"• "; opacity:0.7;}
+  .btn{
+    font-family:'Raleway',sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    letter-spacing:0.01em;
+    border:none;
+    border-radius:999px;
+    padding:16px 34px;
+    cursor:pointer;
+    background:linear-gradient(120deg,var(--maroon),var(--maroon-dark));
+    color:var(--white);
+    box-shadow:0 12px 26px -10px rgba(76,21,48,0.55);
+    transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 16px 30px -10px rgba(76,21,48,0.6);}
+  .btn:disabled{opacity:0.4; cursor:not-allowed; transform:none; box-shadow:none;}
+  .btn-ghost{
+    background:transparent;
+    color:var(--ink-soft);
+    box-shadow:none;
+    padding:16px 20px;
+  }
+  .btn-ghost:hover{color:var(--maroon); transform:none;}
+
+  /* ---------- FORM WRAPPER ---------- */
+  .form-screen{
+    display:none;
+    min-height:calc(100vh - 62px);
+    background:var(--cream);
+    align-items:center;
+    justify-content:center;
+    padding:40px 20px;
+    position:relative;
+  }
+  .form-screen.active{display:flex;}
+  .form-screen::before{
+    content:"";
+    position:absolute;
+    top:-80px; right:-80px;
+    width:280px;height:280px;
+    border-radius:50%;
+    background:radial-gradient(circle, var(--cream-2) 0%, transparent 70%);
+  }
+
+  .progress-wrap{
+    position:fixed;
+    top:62px; left:0; right:0;
+    height:4px;
+    background:rgba(110,34,71,0.1);
+    z-index:20;
+  }
+  .progress-bar{
+    height:100%;
+    background:linear-gradient(90deg,var(--rose),var(--maroon));
+    width:0%;
+    transition:width .4s ease;
+  }
+
+  .card{
+    background:var(--white);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    padding:44px 40px;
+    max-width:560px;
+    width:100%;
+    position:relative;
+    z-index:1;
+    animation:fadeUp .5s ease both;
+  }
+  .q-eyebrow{
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    font-weight:700;
+    color:var(--gold);
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .q-title{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.6rem;
+    font-weight:500;
+    color:var(--maroon-dark);
+    margin:0 0 8px;
+    line-height:1.3;
+  }
+  .q-sub{
+    font-size:0.88rem;
+    color:var(--ink-soft);
+    margin:0 0 26px;
+  }
+
+  input[type=text], input[type=tel], textarea{
+    width:100%;
+    font-family:'Raleway',sans-serif;
+    font-size:1rem;
+    padding:14px 16px;
+    border-radius:12px;
+    border:1.5px solid #e6d9d0;
+    background:var(--cream);
+    color:var(--ink);
+    outline:none;
+    transition:border-color .18s ease, background .18s ease;
+  }
+  input[type=text]:focus, input[type=tel]:focus, textarea:focus{
+    border-color:var(--rose);
+    background:var(--white);
+  }
+  textarea{min-height:110px; resize:vertical; font-family:'Raleway',sans-serif;}
+
+  .options{display:flex; flex-direction:column; gap:10px; margin-bottom:8px;}
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    border-radius:12px;
+    border:1.5px solid #e6d9d0;
+    background:var(--cream);
+    cursor:pointer;
+    font-size:0.95rem;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .opt:hover{border-color:var(--rose-light);}
+  .opt input{accent-color:var(--maroon); width:17px; height:17px; flex-shrink:0;}
+  .opt.selected{
+    border-color:var(--maroon);
+    background:#fbf3f6;
+  }
+
+  .scale-row{display:flex; gap:8px; margin-bottom:6px; flex-wrap:wrap;}
+  .scale-btn{
+    flex:1;
+    min-width:52px;
+    text-align:center;
+    padding:14px 0;
+    border-radius:12px;
+    border:1.5px solid #e6d9d0;
+    background:var(--cream);
+    cursor:pointer;
+    font-weight:600;
+    color:var(--ink-soft);
+    transition:all .15s ease;
+  }
+  .scale-btn.selected{
+    background:linear-gradient(120deg,var(--maroon),var(--maroon-dark));
+    color:var(--white);
+    border-color:var(--maroon);
+  }
+  .scale-labels{display:flex; justify-content:space-between; font-size:0.75rem; color:var(--ink-soft); margin-bottom:22px;}
+
+  .nav-row{display:flex; justify-content:space-between; align-items:center; margin-top:28px;}
+  .nav-right{display:flex; gap:10px; align-items:center;}
+  .step-count{font-size:0.75rem; color:var(--ink-soft); letter-spacing:0.04em;}
+
+  .consent-row{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    background:var(--cream);
+    border-radius:14px;
+    padding:16px;
+    font-size:0.88rem;
+    color:var(--ink-soft);
+    line-height:1.5;
+    margin-bottom:22px;
+  }
+  .consent-row input{margin-top:3px; accent-color:var(--maroon); width:17px; height:17px; flex-shrink:0;}
+
+  /* ---------- THANK YOU ---------- */
+  .thanks-card{text-align:center; padding:52px 40px;}
+  .check-circle{
+    width:64px; height:64px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--maroon),var(--rose));
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 22px;
+  }
+  .check-circle svg{width:28px; height:28px;}
+  .thanks-card h2{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.7rem;
+    color:var(--maroon-dark);
+    font-weight:500;
+    margin:0 0 14px;
+  }
+  .thanks-card p{color:var(--ink-soft); font-size:0.95rem; line-height:1.7; margin:0 0 20px;}
+  .thanks-sign{font-size:0.9rem; color:var(--ink-soft);}
+  .thanks-sign strong{display:block; font-family:'Cormorant Garamond',serif; font-size:1.15rem; color:var(--maroon-dark); margin-top:4px;}
+
+  .error-msg{color:#a13c5b; font-size:0.8rem; margin:-14px 0 16px; display:none;}
+  .error-msg.show{display:block;}
+
+  @media(max-width:640px){
+    .hero{justify-content:center; text-align:center; padding:50px 6vw;}
+    .hero-inner{text-align:center;}
+    .hero-facts{justify-content:center;}
+    .card{padding:30px 24px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">Laís Lima | Psicóloga</div>
+<div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<!-- STEP 0: INTRO -->
+<section class="form-screen active" id="screen-intro" style="min-height:calc(100vh - 62px); padding:0;">
+  <div class="hero">
+    <div class="hero-inner">
+      <span class="badge">PESQUISA DE INTERESSE</span>
+      <h1>Antes de criar,<em>eu quero te ouvir</em></h1>
+      <p>Estou preparando um workshop de saúde mental especialmente para mulheres. Responda algumas perguntas para que eu possa trazer algo que realmente faça sentido para você.</p>
+      <div class="hero-facts">
+        <span>Menos de 5 minutos</span>
+        <span>100% gratuito</span>
+        <span>Suas respostas ficam seguras</span>
+      </div>
+      <button class="btn" id="startBtn">Quero responder →</button>
+    </div>
+  </div>
+</section>
+
+<!-- QUESTION STEPS -->
+<div id="questionsContainer"></div>
+
+<!-- FINAL: THANK YOU -->
+<section class="form-screen" id="screen-thanks">
+  <div class="card thanks-card">
+    <div class="check-circle">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <h2>Obrigada por me contar isso.</h2>
+    <p>Suas respostas vão me ajudar a criar um workshop que de fato chegue onde você precisa. Assim que estiver pronto, você será uma das primeiras a saber.</p>
+    <div class="thanks-sign">Até lá, com carinho,<strong>Laís Rodrigues</strong></div>
+  </div>
+</section>
+
+<script>
+/* ========================================================
+   1) COLE AQUI A URL DO SEU GOOGLE APPS SCRIPT (Web App)
+   Veja o passo a passo enviado junto com este arquivo.
+========================================================= */
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6ryxnurlI1PKUlDaObe6RDAVhiYh6uz3TKS8ZU7v9dMwYgSq2I4k8_DpPo873PWC0/exec";
+
+const answers = {};
+
+const questions = [
+  {
+    id:"nome", type:"text", eyebrow:"01 · Vamos começar",
+    title:"Qual é o seu nome?",
+    placeholder:"Digite seu nome completo", required:true
+  },
+  {
+    id:"whatsapp", type:"tel", eyebrow:"02 · Contato",
+    title:"Qual o seu WhatsApp?",
+    sub:"Assim consigo te avisar em primeira mão sobre o workshop.",
+    placeholder:"(21) 90000-0000", required:true
+  },
+  {
+    id:"faixa_etaria", type:"single", eyebrow:"03 · Sobre você",
+    title:"Qual é a sua faixa etária?",
+    options:["18 a 24 anos","25 a 34 anos","35 a 44 anos","45 a 54 anos","55 anos ou mais"],
+    required:true
+  },
+  {
+    id:"mae", type:"single", eyebrow:"04 · Sobre você",
+    title:"Você é mãe?",
+    options:["Sim","Não","Estou grávida"],
+    required:true
+  },
+  {
+    id:"renda", type:"single", eyebrow:"05 · Sobre você",
+    title:"Qual sua renda mensal aproximada?",
+    sub:"Isso me ajuda a pensar em um valor justo para o workshop.",
+    options:["Até R$ 2.000","R$ 2.001 a R$ 4.000","R$ 4.001 a R$ 7.000","R$ 7.001 a R$ 10.000","Acima de R$ 10.000","Prefiro não informar"],
+    required:true
+  },
+  {
+    id:"o_que_pesa", type:"multi", eyebrow:"06 · O seu momento",
+    title:"O que mais pesa no seu dia a dia hoje?",
+    sub:"Pode marcar mais de uma opção.",
+    options:["Ansiedade","Sobrecarga","Autoestima","Culpa materna","Limites","Relacionamentos","Identidade","Autocuidado"],
+    required:true
+  },
+  {
+    id:"nota_saude_mental", type:"scale", eyebrow:"07 · O seu momento",
+    title:"De 1 a 5, como você avalia sua saúde mental hoje?",
+    scaleMin:"1 · Muito ruim", scaleMax:"5 · Muito boa",
+    required:true
+  },
+  {
+    id:"ja_fez_terapia", type:"single", eyebrow:"08 · Seu histórico",
+    title:"Você já fez terapia?",
+    options:["Sim, faço atualmente","Já fiz, não faço mais","Nunca fiz, mas penso em fazer","Nunca fiz"],
+    required:true
+  },
+  {
+    id:"tema_workshop", type:"single", eyebrow:"09 · O workshop",
+    title:"Qual tema mais desperta seu interesse?",
+    options:["Ansiedade e sobrecarga emocional","Culpa materna e maternidade real","Autoestima e autoconhecimento","Limites saudáveis e relacionamentos","Reconexão com a própria identidade"],
+    required:true
+  },
+  {
+    id:"quanto_pagaria", type:"single", eyebrow:"10 · O workshop",
+    title:"Quanto você pagaria por um workshop online de 1h30?",
+    options:["Até R$ 47","R$ 48 a R$ 97","R$ 98 a R$ 147","R$ 148 a R$ 197","Acima de R$ 197"],
+    required:true
+  },
+  {
+    id:"horario", type:"single", eyebrow:"11 · O workshop",
+    title:"Qual horário funciona melhor para você?",
+    options:["Manhã (em dia de semana)","Tarde (em dia de semana)","Noite (em dia de semana)","Fim de semana"],
+    required:true
+  },
+  {
+    id:"como_conheceu", type:"single", eyebrow:"12 · Quase lá",
+    title:"Como você me conheceu?",
+    options:["Instagram","Indicação de uma amiga","Google","Outro"],
+    required:true
+  },
+  {
+    id:"campo_aberto", type:"textarea", eyebrow:"13 · Opcional",
+    title:"Tem mais alguma coisa que você queira me contar?",
+    sub:"Fique à vontade — pode ser sobre o que você sente ou o que espera desse workshop.",
+    placeholder:"Escreva aqui, se quiser...", required:false
+  }
+];
+
+const container = document.getElementById("questionsContainer");
+const progressBar = document.getElementById("progressBar");
+let currentIndex = -1; // -1 = intro
+
+function buildQuestionScreen(q, index){
+  const section = document.createElement("section");
+  section.className = "form-screen";
+  section.id = "screen-" + q.id;
+
+  let bodyHTML = "";
+
+  if(q.type === "text" || q.type === "tel"){
+    bodyHTML = `<input type="${q.type}" id="input-${q.id}" placeholder="${q.placeholder||''}" />`;
+  }
+  if(q.type === "textarea"){
+    bodyHTML = `<textarea id="input-${q.id}" placeholder="${q.placeholder||''}"></textarea>`;
+  }
+  if(q.type === "single" || q.type === "multi"){
+    const inputType = q.type === "single" ? "radio" : "checkbox";
+    bodyHTML = `<div class="options">` + q.options.map((opt,i) => `
+      <label class="opt" data-value="${opt}">
+        <input type="${inputType}" name="${q.id}" value="${opt}">
+        <span>${opt}</span>
+      </label>`).join("") + `</div>`;
+  }
+  if(q.type === "scale"){
+    bodyHTML = `
+      <div class="scale-row">
+        ${[1,2,3,4,5].map(n => `<div class="scale-btn" data-value="${n}">${n}</div>`).join("")}
+      </div>
+      <div class="scale-labels"><span>${q.scaleMin}</span><span>${q.scaleMax}</span></div>
+    `;
+  }
+
+  section.innerHTML = `
+    <div class="card">
+      <div class="q-eyebrow">${q.eyebrow}</div>
+      <h2 class="q-title">${q.title}</h2>
+      ${q.sub ? `<p class="q-sub">${q.sub}</p>` : ""}
+      ${bodyHTML}
+      <div class="error-msg" id="error-${q.id}">Por favor, responda para continuar.</div>
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-action="back">← Voltar</button>
+        <div class="nav-right">
+          <span class="step-count">${index+1} / ${questions.length}</span>
+          <button class="btn" data-action="next">Continuar</button>
+        </div>
+      </div>
+    </div>
+  `;
+  container.appendChild(section);
+
+  // interactions
+  if(q.type === "single" || q.type === "multi"){
+    section.querySelectorAll(".opt").forEach(label => {
+      label.addEventListener("click", () => {
+        const input = label.querySelector("input");
+        if(q.type === "single"){
+          section.querySelectorAll(".opt").forEach(l => l.classList.remove("selected"));
+          label.classList.add("selected");
+        } else {
+          setTimeout(() => label.classList.toggle("selected", input.checked), 0);
+        }
+      });
+    });
+  }
+  if(q.type === "scale"){
+    section.querySelectorAll(".scale-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        section.querySelectorAll(".scale-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        btn.dataset.selected = "true";
+      });
+    });
+  }
+
+  section.querySelector('[data-action="back"]').addEventListener("click", () => goTo(index - 1));
+  section.querySelector('[data-action="next"]').addEventListener("click", () => {
+    if(collectAnswer(q, section)){
+      if(index === questions.length - 1){
+        renderConsentStep();
+        goToScreen("screen-consent");
+      } else {
+        goTo(index + 1);
+      }
+    }
+  });
+
+  return section;
+}
+
+function collectAnswer(q, section){
+  const errorEl = section.querySelector(".error-msg");
+  let value = null;
+
+  if(q.type === "text" || q.type === "tel" || q.type === "textarea"){
+    value = section.querySelector("#input-" + q.id).value.trim();
+  }
+  if(q.type === "single"){
+    const checked = section.querySelector('input[name="'+q.id+'"]:checked');
+    value = checked ? checked.value : null;
+  }
+  if(q.type === "multi"){
+    const checked = [...section.querySelectorAll('input[name="'+q.id+'"]:checked')];
+    value = checked.map(c => c.value);
+    if(value.length === 0) value = null;
+  }
+  if(q.type === "scale"){
+    const sel = section.querySelector(".scale-btn.selected");
+    value = sel ? sel.dataset.value : null;
+  }
+
+  if(q.required && (!value || value.length === 0)){
+    errorEl.classList.add("show");
+    return false;
+  }
+  errorEl.classList.remove("show");
+  answers[q.id] = Array.isArray(value) ? value.join(", ") : (value || "");
+  return true;
+}
+
+// build all question screens
+questions.forEach((q, i) => buildQuestionScreen(q, i));
+
+// consent + submit screen (built dynamically, once)
+function renderConsentStep(){
+  if(document.getElementById("screen-consent")) return;
+  const section = document.createElement("section");
+  section.className = "form-screen";
+  section.id = "screen-consent";
+  section.innerHTML = `
+    <div class="card">
+      <div class="q-eyebrow">Última etapa</div>
+      <h2 class="q-title">Podemos falar com você pelo WhatsApp?</h2>
+      <p class="q-sub">Só assim para te avisar sobre o workshop e enviar conteúdos de saúde mental.</p>
+      <label class="consent-row">
+        <input type="checkbox" id="consentCheck">
+        <span>Concordo que Laís Lima entre em contato via WhatsApp com informações sobre o workshop e conteúdos de saúde mental. Não há spam, apenas conteúdo relevante.</span>
+      </label>
+      <div class="error-msg" id="error-consent">Marque a caixa para conseguirmos enviar sua resposta.</div>
+      <div style="text-align:center;">
+        <button class="btn" id="submitBtn" style="width:100%; justify-content:center;">✈ Enviar minha resposta</button>
+        <p style="font-size:0.75rem; color:var(--ink-soft); margin-top:14px;">Suas informações ficam seguras e não são compartilhadas com terceiros.</p>
+      </div>
+      <div class="nav-row" style="justify-content:flex-start; margin-top:6px;">
+        <button class="btn btn-ghost" data-action="back">← Voltar</button>
+      </div>
+    </div>
+  `;
+  container.appendChild(section);
+
+  section.querySelector('[data-action="back"]').addEventListener("click", () => goTo(questions.length - 1));
+  section.querySelector("#submitBtn").addEventListener("click", submitForm);
+}
+
+function submitForm(){
+  const consentCheck = document.getElementById("consentCheck");
+  const errorEl = document.getElementById("error-consent");
+  if(!consentCheck.checked){
+    errorEl.classList.add("show");
+    return;
+  }
+  errorEl.classList.remove("show");
+
+  answers["consentimento_whatsapp"] = "Sim";
+  answers["data_envio"] = new Date().toLocaleString("pt-BR");
+
+  const submitBtn = document.getElementById("submitBtn");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Enviando...";
+
+  if(GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.startsWith("http")){
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(answers)
+    }).finally(() => {
+      goToScreen("screen-thanks");
+    });
+  } else {
+    console.log("Respostas (configure a URL do Google Script para salvar de verdade):", answers);
+    setTimeout(() => goToScreen("screen-thanks"), 400);
+  }
+}
+
+// navigation helpers
+function goToScreen(id){
+  document.querySelectorAll(".form-screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:0, behavior:"smooth"});
+  updateProgress(id);
+}
+
+function goTo(index){
+  currentIndex = index;
+  if(index < 0){
+    goToScreen("screen-intro");
+    return;
+  }
+  goToScreen("screen-" + questions[index].id);
+}
+
+function updateProgress(activeId){
+  if(activeId === "screen-intro"){ progressBar.style.width = "0%"; return; }
+  if(activeId === "screen-thanks"){ progressBar.style.width = "100%"; return; }
+  const qIndex = questions.findIndex(q => "screen-" + q.id === activeId);
+  const total = questions.length + 1; // +1 for consent step
+  const pos = qIndex >= 0 ? qIndex + 1 : questions.length + 1;
+  progressBar.style.width = Math.round((pos/total)*100) + "%";
+}
+
+document.getElementById("startBtn").addEventListener("click", () => goTo(0));
+</script>
+</body>
+</html>
